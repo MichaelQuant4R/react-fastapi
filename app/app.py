@@ -4,6 +4,9 @@ from fastapi.middleware import Middleware
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 import uvicorn
+from starlette.responses import FileResponse 
+
+
 
 app = FastAPI()
 
@@ -33,7 +36,9 @@ app.mount("/", StaticFiles(directory="static",html = True), name="static")
 # async def serve_spa(request: Request):
 #     return templates.TemplateResponse("index.html", {"request": request})
 
-
+@app.get("/")
+async def read_index():
+    return FileResponse('index.html')
 
 @app.get("/api/data")
 async def get_data(request: Request):
