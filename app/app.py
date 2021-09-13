@@ -9,8 +9,8 @@ app = FastAPI()
 
 
 origins = [
-    "https://holistic-fastapi.herokuapp.com/",
-    "holistic-fastapi.herokuapp.com/"
+    "https://holistic-fastapi.herokuapp.com",
+    "holistic-fastapi.herokuapp.com"
 ]
 
 
@@ -23,13 +23,15 @@ app.add_middleware(
 )
 
 
-app.mount("/static", StaticFiles(directory="static"), name="static")
+# app.mount("/static", StaticFiles(directory="static"), name="static")
 
-templates = Jinja2Templates(directory="templates")
+app.mount("/", StaticFiles(directory="static",html = True), name="static")
 
-@app.get("/")
-async def serve_spa(request: Request):
-    return templates.TemplateResponse("index.html", {"request": request})
+# templates = Jinja2Templates(directory="templates")
+
+# @app.get("/")
+# async def serve_spa(request: Request):
+#     return templates.TemplateResponse("index.html", {"request": request})
 
 
 
