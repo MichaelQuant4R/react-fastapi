@@ -28,7 +28,7 @@ app.add_middleware(
 
 # app.mount("/static", StaticFiles(directory="static"), name="static")
 
-app.mount("/", StaticFiles(directory="static",html = True), name="static")
+app.mount("/static", StaticFiles(directory="static"), name="static")
 
 # templates = Jinja2Templates(directory="templates")
 
@@ -36,9 +36,9 @@ app.mount("/", StaticFiles(directory="static",html = True), name="static")
 # async def serve_spa(request: Request):
 #     return templates.TemplateResponse("index.html", {"request": request})
 
-@app.get("/")
-async def read_index():
-    return FileResponse('index.html')
+# @app.get("/")
+# async def read_index():
+#     return FileResponse('index.html')
 
 @app.get("/api/data")
 async def get_data(request: Request):
