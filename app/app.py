@@ -4,18 +4,13 @@ from fastapi.middleware import Middleware
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 import uvicorn
-from starlette.responses import FileResponse 
-
-
-
+from fastapi.responses import RedirectResponse, FileResponse, HTMLResponse
 app = FastAPI()
-
 
 origins = [
     "https://holistic-fastapi.herokuapp.com",
     "holistic-fastapi.herokuapp.com"
 ]
-
 
 app.add_middleware(
         CORSMiddleware,
@@ -26,19 +21,19 @@ app.add_middleware(
 )
 
 
-# app.mount("/static", StaticFiles(directory="static"), name="static")
+app.mount("/static", StaticFiles(directory="client/build/static"), name="static")
 
-app.mount("/static", StaticFiles(directory="static"), name="static")
+@app.get("/", response_class=FileResponse)
+def read_index(request: Request):
+    path = "client/build/index.html"
+    return FileResponse(path)
 
-# templates = Jinja2Templates(directory="templates")
 
-# @app.get("/")
-# async def serve_spa(request: Request):
-#     return templates.TemplateResponse("index.html", {"request": request})
 
-# @app.get("/")
-# async def read_index():
-#     return FileResponse('index.html')
+
+
+
+
 
 @app.get("/api/data")
 async def get_data(request: Request):
@@ -46,8 +41,6 @@ async def get_data(request: Request):
     print(request)
     
     return {"data": True}
-
-
 
 if __name__ == "__main__":
     uvicorn.run("app:app", debug = True, reload=True)
